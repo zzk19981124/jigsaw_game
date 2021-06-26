@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
  */
 public class Jigsaw {
     private Bitmap mBitmap;
-    private int original_x;
+    private int original_x; //original 原始的、最初的
     private int original_y;
     private int now_x;
     private int now_y;

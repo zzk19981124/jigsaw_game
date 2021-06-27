@@ -30,20 +30,16 @@ public class JigsawHelper {
         return mInstance;
     }
 
-    public static void setInstance(JigsawHelper mInstance) {
-        JigsawHelper.mInstance = mInstance;
-    }
-
     //获取拼图 (大图)
-    private Bitmap getJigsaw(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.porridge);
+    public Bitmap getJigsaw(Context context) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.hand);
         int bitmapWidth = bitmap.getWidth();
         int bitmapHeight = bitmap.getHeight();
         int screenWidth = getScreenWidth(context); //获取屏幕的宽度
         //按屏幕宽铺满显示，算出缩放比例
         float scale = 1.0f;
-        if (screenWidth < bitmapWidth) {
-            scale = screenWidth * 1.0f / bitmapWidth;   //filter
+        if (bitmapWidth < screenWidth) {
+            scale = (screenWidth * 1.0f) / bitmapWidth;   //filter
         }
         bitmap = Bitmap.createScaledBitmap(bitmap, screenWidth, (int) (bitmapHeight * scale), false);   //filter 过滤
         return bitmap;
@@ -58,7 +54,7 @@ public class JigsawHelper {
     }
 
     //判断当前 view是否在可移动范围之内 （在空白view的上下左右）                          （可能有问题）
-    private boolean isNearByEmptyView(ImageView imageView, ImageView emptyView) {
+    public boolean isNearByEmptyView(ImageView imageView, ImageView emptyView) {
         Jigsaw emptyJigsaw = (Jigsaw) imageView.getTag();   //getTag() 取出数据
         Jigsaw jigsaw = (Jigsaw) emptyView.getTag();   //cast 加
         if (emptyJigsaw != null && jigsaw != null) {
@@ -83,21 +79,21 @@ public class JigsawHelper {
     }
 
     //判断游戏是否结束
-    private boolean isFinishGame(ImageView[][] imageViews, ImageView emptyView) {
+    public boolean isFinishGame(ImageView[][] imageViews, ImageView emptyView) {
         int rightNum = 0;  //记录匹配拼图数
         for (int i = 0; i < imageViews.length; i++) {
             for (int j = 0; j < imageViews[0].length; j++) {
                 if (imageViews[i][j] != emptyView) {
                     Jigsaw jigsaw = (Jigsaw) imageViews[i][j].getTag();
-                    if (jigsaw != null){
-                        if (jigsaw.getOriginal_x() == jigsaw.getNow_x() && jigsaw.getOriginal_y() == jigsaw.getNow_y()){
+                    if (jigsaw != null) {
+                        if (jigsaw.getOriginal_x() == jigsaw.getNow_x() && jigsaw.getOriginal_y() == jigsaw.getNow_y()) {
                             rightNum++;
                         }
                     }
                 }
             }
         }
-        if (rightNum == (imageViews.length*imageViews[0].length -1)){
+        if (rightNum == (imageViews.length * imageViews[0].length - 1)) {
             return true;
         }
         return false;

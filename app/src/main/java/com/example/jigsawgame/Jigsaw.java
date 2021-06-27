@@ -17,12 +17,12 @@ public class Jigsaw {
     public Jigsaw(){
     }
 
-    public Jigsaw(Bitmap bitmap, int original_x, int original_y, int now_x, int now_y) {
+    public Jigsaw(Bitmap bitmap, int original_x, int original_y) {
         mBitmap = bitmap;
         this.original_x = original_x;
         this.original_y = original_y;
-        this.now_x = now_x;
-        this.now_y = now_y;
+        this.now_x = original_x;
+        this.now_y = original_y;
     }
 
     public Bitmap getBitmap() {

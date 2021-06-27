@@ -3,6 +3,7 @@ package com.example.jigsawgame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 //绑定数据
-                imageView.setTag(new Jigsaw(bitmap,j,i));
+                imageView.setTag(new Jigsaw(bitmap,i,j));
                 //添加到拼图布局
                 imageViews[i][j] = imageView;
                 mGridLayout.addView(imageView);
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         //设置拼图空碎片
         ImageView imageView = (ImageView) mGridLayout.getChildAt(mGridLayout.getChildCount()-1);
         imageView.setImageBitmap(null);
+        //imageView.setBackgroundColor(Color.WHITE);    无效
         emptyImageView = imageView;
     }
 
@@ -89,14 +91,17 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化拼图，打乱顺序
     private void randomJigsaw() {
-
+        for (int i = 0;i<100;i++){
+            int gestureDirection = (int) (Math.random()*4+1);
+            handleFlingGesture(gestureDirection,false);
+        }
     }
     //处理拼图间的移动
     private void handleClickItem(final ImageView imageView,boolean animation){
         if (animation){
             handleClickItem(imageView);
         }else{
-
+            changeJigsawData(imageView);
         }
     }
     //处理点击拼图的移动事件
@@ -165,13 +170,34 @@ public class MainActivity extends AppCompatActivity {
         //更新空拼图引用
         emptyImageView = imageView;
     }
-    //处理手势移动拼图
+    /*
+    * 处理手势移动拼图
+    * animation  是否带有动画
+    * */
+
     private void handleFlingGesture(int gestureDirection, boolean animation){
         ImageView imageView = null;
         Jigsaw emptyJigsaw  = (Jigsaw) emptyImageView.getTag();
         switch (gestureDirection){
             case GestureHelper.LEFT:
-                //if (emptyJigsaw.get)
+                if (emptyJigsaw.getOriginal_y()+1 <= mGridLayout.getColumnCount()-1){
+                    imageView = imageViews[emptyJigsaw.getOriginal_x()][emptyJigsaw.getOriginal_y()+1];
+                }
+                break;
+            case GestureHelper.RIGHT:
+                if (emptyJigsaw.getOriginal_y()-1 >= 0){
+                    imageView = imageViews[emptyJigsaw.getOriginal_x()][emptyJigsaw.getOriginal_y()-1];
+                }
+                break;
+            case GestureHelper.UP:
+                if (emptyJigsaw.getOriginal_x()+1 <= mGridLayout.getRowCount()-1){
+                    imageView = imageViews[emptyJigsaw.getOriginal_x()][emptyJigsaw.getOriginal_y()+1];
+                }
+                break;
+            case GestureHelper.DOWN:
+                if (emptyJigsaw.getOriginal_x()-1 <= 0){
+                    imageView = imageViews[emptyJigsaw.getOriginal_x()][emptyJigsaw.getOriginal_y()+1];
+                }
                 break;
             default:
                 break;

@@ -59,19 +59,19 @@ public class JigsawHelper {
         Jigsaw jigsaw = (Jigsaw) emptyView.getTag();   //cast 加
         if (emptyJigsaw != null && jigsaw != null) {
             //点击拼图在空拼图左边
-            if (jigsaw.getOriginal_x() + 1 == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() == emptyJigsaw.getOriginal_y()) {
-                return true;
-            }
-            //点击拼图在空拼图右边
-            if (jigsaw.getOriginal_x() - 1 == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() == emptyJigsaw.getOriginal_y()) {
-                return true;
-            }
-            //点击拼图在空拼图上边
             if (jigsaw.getOriginal_x() == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() + 1 == emptyJigsaw.getOriginal_y()) {
                 return true;
             }
-            //点击拼图在空拼图下边
+            //点击拼图在空拼图右边
             if (jigsaw.getOriginal_x() == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() - 1 == emptyJigsaw.getOriginal_y()) {
+                return true;
+            }
+            //点击拼图在空拼图上边
+            if (jigsaw.getOriginal_x() + 1 == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() == emptyJigsaw.getOriginal_y()) {
+                return true;
+            }
+            //点击拼图在空拼图下边
+            if (jigsaw.getOriginal_x() - 1 == emptyJigsaw.getOriginal_x() && jigsaw.getOriginal_y() == emptyJigsaw.getOriginal_y()) {
                 return true;
             }
         }

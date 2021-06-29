@@ -83,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 //判断手指滑动方向
-                //int gestureDetector = GestureH
+                int gestureDetector = GestureHelper.getInstance().getGestureDirection(e1,e2);
+                //处理滑动拼图
+                handleFlingGesture(gestureDetector,false);
                 return true;
             }
         });

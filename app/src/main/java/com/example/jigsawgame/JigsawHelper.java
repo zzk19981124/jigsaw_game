@@ -30,9 +30,19 @@ public class JigsawHelper {
         return mInstance;
     }
 
-    //获取拼图 (大图)
+
+    /*
+    *   获取拼图 (大图)
+    *                                    这块有问题！   图片放进去分辨率降低了
+    * */
     public Bitmap getJigsaw(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.hand);
+        /*
+        解决图片缩放的问题
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = true;
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.hand,options);
+        */
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.timg);
         int bitmapWidth = bitmap.getWidth();
         int bitmapHeight = bitmap.getHeight();
         int screenWidth = getScreenWidth(context); //获取屏幕的宽度

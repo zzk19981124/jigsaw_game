@@ -33,16 +33,9 @@ public class JigsawHelper {
 
     /*
     *   获取拼图 (大图)
-    *                                    这块有问题！   图片放进去分辨率降低了
     * */
     public Bitmap getJigsaw(Context context) {
-        /*
-        解决图片缩放的问题
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = true;
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.hand,options);
-        */
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.timg);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.timg1);
         int bitmapWidth = bitmap.getWidth();
         int bitmapHeight = bitmap.getHeight();
         int screenWidth = getScreenWidth(context); //获取屏幕的宽度
@@ -63,7 +56,7 @@ public class JigsawHelper {
         return displayMetrics.widthPixels;
     }
 
-    //判断当前 view是否在可移动范围之内 （在空白view的上下左右）                          （可能有问题）
+    //判断当前 view是否在可移动范围之内 （在空白view的上下左右）
     public boolean isNearByEmptyView(ImageView imageView, ImageView emptyView) {
         Jigsaw emptyJigsaw = (Jigsaw) imageView.getTag();   //getTag() 取出数据
         Jigsaw jigsaw = (Jigsaw) emptyView.getTag();   //cast 加

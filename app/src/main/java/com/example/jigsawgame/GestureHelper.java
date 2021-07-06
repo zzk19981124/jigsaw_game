@@ -43,17 +43,17 @@ public class GestureHelper {
 
         int gestureDirection = Math.abs(startX - endX) > Math.abs(startY - endY) ? LEFT_OR_RIGHT : UP_OR_DOWN;
         //具体判断滑动方向
-        switch (gestureDirection){
+        switch (gestureDirection) {
             case LEFT_OR_RIGHT:
-                if (startX<endX){
+                if (startX < endX) {
                     return RIGHT;
-                }else{
+                } else {
                     return LEFT;
                 }
             case UP_OR_DOWN:
-                if (startY<endY){
+                if (startY < endY) {
                     return DOWN;
-                }else{
+                } else {
                     return UP;
                 }
         }

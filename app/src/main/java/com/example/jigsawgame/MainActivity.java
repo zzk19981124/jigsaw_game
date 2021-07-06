@@ -1,5 +1,6 @@
 package com.example.jigsawgame;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
@@ -7,11 +8,14 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,25 +24,45 @@ public class MainActivity extends AppCompatActivity {
     private boolean isAnimated; //动画是否在执行，避免快速点击导致动画重复执行
     private GridLayout mGridLayout;
     private ImageView emptyImageView;  //空白拼图碎片
-    private GestureDetector mGestureDetector;    //用户手势检测
+    private GestureDetector mGestureDetector;//用户手势检测
+    private Button btn_random;
     //维护拼图碎片的集合
     private int[][] jigsawArray = new int[3][5];
     private ImageView[][] imageViews = new ImageView[3][5];
-
+    public static final int UPDATE_JIGSAW = 1;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case UPDATE_JIGSAW:
+                    randomJigsaw1();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        jigsawProcess();    //拼图的逻辑判断
+        btn_random  =findViewById(R.id.main_btn_random);
         //初始化拼图的碎片
         Bitmap jigsaw = JigsawHelper.getInstance().getJigsaw(this);
         initJigsaw(jigsaw);
+
+        jigsawProcess();    //拼图的逻辑判断
+
         new Handler().postDelayed(new Runnable() {  //postDelayed  推迟
             @Override
             public void run() {
-                randomJigsaw();
+               // randomJigsaw();
+                //randomJigsaw1();
             }
-        },200);
+        },2000);  //单位毫秒
+
+        //jigsawProcess();    //拼图的逻辑判断
     }
 
     private void initJigsaw(Bitmap bitmapJigsaw) {
@@ -79,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void jigsawProcess() {
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 //判断手指滑动方向
@@ -94,9 +118,13 @@ public class MainActivity extends AppCompatActivity {
     //初始化拼图，打乱顺序
     private void randomJigsaw() {
         for (int i = 0;i<100;i++){
-            int gestureDirection = (int) (Math.random()*4+1);
+            int gestureDirection = (int) ((Math.random()*4)+1);
             handleFlingGesture(gestureDirection,false);
         }
+    }
+    private void randomJigsaw1(){
+        Log.i(TAG, "----------打乱拼图-------");
+
     }
     //处理拼图间的移动
     private void handleClickItem(final ImageView imageView,boolean animation){
@@ -209,9 +237,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return mGestureDetector.onTouchEvent(event);
+    }
+    /*
+    * 点击监听
+    * */
+    public void randomBitmap(View view) {
+        switch (view.getId()){
+            case R.id.main_btn_random:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message message = new Message();
+                        message.what = UPDATE_JIGSAW;
+                        mHandler.sendMessage(message);
+                    }
+                }).start();
+                break;
+            default:
+                break;
+        }
     }
 }
 

@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化拼图，打乱顺序
     private void randomJigsaw() {
+
         for (int i = 0;i<100;i++){
             int gestureDirection = (int) ((Math.random()*4)+1);
             handleFlingGesture(gestureDirection,false);
